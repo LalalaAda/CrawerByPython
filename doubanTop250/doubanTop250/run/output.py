@@ -1,3 +1,6 @@
+#!/usr/bin.python
+# -*- coding: utf-8 -*-
+
 import json
 
 def readMovieJson():
@@ -13,13 +16,13 @@ def readMovieJson():
             if movie["quote"]:
                 quote = movie["quote"][0]
             else:
-                quote = "暂无"
+                quote = u"暂无"
             
             print("top" + rank + "." + \
-                title + " 评分" + star + \
+                title + u" 评分" + star + \
                 '(' + rate + ')' + \
-                "\n链接：" + link + \
-                "\n豆瓣评论：" + quote + "\n")
+                u"\n链接：" + link + \
+                u"\n豆瓣评论：" + quote + "\n")
 
 if __name__ == '__main__':
     readMovieJson()

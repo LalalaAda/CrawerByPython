@@ -1,3 +1,5 @@
+#!/usr/bin/python
+# -*- coding: utf-8 -*-
 import scrapy
 from doubanTop250.items import Doubantop250Item
 
