@@ -35,7 +35,8 @@ class downloader(object):
     pattern_catalog = re.compile(r'<dt>.*(\r|\n|\s)*</dt>')
     # 去除尾部 以m.23xsww.com结尾的文本 例如 全本精彩小说尽在m.23xsww.com
     # pattern_body = re.compile(r'\(https://.*(\r|\n|\s)*.*m\.23xsww\.com')
-    pattern_body = re.compile(r'\(https://.*(\r|\n|\s)*.*m\.cc148\.com')
+    pattern_body = re.compile(r'请记住本书首发域名：www.cc148.com笔趣阁手机版阅读网址：m.cc148.com')
+    clear_re = re.compile(r'\n|&nbsp|\xa0|\\xa0|\u3000|\\u3000|\\u0020|\u0020|\t|\r')
 
     def __init__(self):
         # self.server = 'https://www.23xsww.com/'
@@ -45,7 +46,7 @@ class downloader(object):
         self.names = []     #存放章节名
         self.urls = []      #存放章节链接
         self.nums = 0       #章节数
-        self.bookName = '绝地求生捡碎片'
+        self.bookName = '绝地求生捡碎片000'
         self.reqEncoding = 'gbk' # request请求时有些网站中文乱码 可以设置请求编码
     
     def get_download_url(self):
@@ -69,14 +70,12 @@ class downloader(object):
         req = requests.get(url=target)
         req.encoding = self.reqEncoding
         html = req.text
-        bf = BeautifulSoup(html, 'html.parser')
-        # texts = bf.find_all('div', class_='showtxt')
-        texts = bf.find_all('div', id='content')
-        # 用于减除 &nbsp;&nbsp;&nbsp;&nbsp; 这样的文本
-        txt = texts[0].text.replace('\xa0'*8, "\n")
-        really_txt = self.pattern_body.sub('\t', txt)
-        # print(txt)
-        return really_txt
+        bf = BeautifulSoup(html, features="html.parser")
+        texts = bf.find_all('div', id = 'content')
+        txt = texts[0].text
+        txt = self.clear_re.sub('\n', txt)
+        txt = self.pattern_body.sub('', txt)
+        return txt
 
     def writer(self, name, path, text):
         write_flag = True
